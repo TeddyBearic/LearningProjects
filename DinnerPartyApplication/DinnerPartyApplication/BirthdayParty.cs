@@ -47,7 +47,7 @@ namespace DinnerPartyApplication
         {
             get
             {
-                if CakeWriting.Length > MaxWritingLength())
+                if (CakeWriting.Length > MaxWritingLength())
                     return MaxWritingLength();
                 else
                     return CakeWriting.Length;
