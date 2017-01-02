@@ -8,31 +8,57 @@ namespace DinnerPartyApplication
 {
     class DinnerParty
     {
-        public int NumberOfPeople;
-        private decimal CostOfBeveragesPerPerson;
-        private decimal CostOfDecorations;
+        public int NumberOfPeople { get; set; }
+        public bool FancyDecorations { get; set; }
+        public bool HealthyOptions { get; set; }
         public const int CostOfFoodPerPerson = 25;
 
-        public void CalculateCostOfDecorations(bool FancyDecorations)
+        public DinnerParty(int numberOfPeople, bool fancyDecorations, bool healthyOptions)
         {
-            if (FancyDecorations) { CostOfDecorations = (NumberOfPeople * 15) + 50; }
-            else { CostOfDecorations = (NumberOfPeople * 7.50M) + 30; }
+            NumberOfPeople = numberOfPeople;
+            FancyDecorations = fancyDecorations;
+            HealthyOptions = healthyOptions;
         }
 
-        public void SetHealthyOption(bool HealthyOption)
+        private decimal CalculateCostOfDecorations()
         {
-            if (HealthyOption) { CostOfBeveragesPerPerson = 5; }
-            else { CostOfBeveragesPerPerson = 20; }
+            decimal costOfDecorations;
+
+            if (FancyDecorations)
+                costOfDecorations = (NumberOfPeople * 15) + 50;
+            else
+                costOfDecorations = (NumberOfPeople * 7.50M) + 30;
+
+            return costOfDecorations;
         }
 
-        public decimal CalculateCost(bool HealthyOption)
+        private decimal CalculateCostOfBeveragesPerPersom()
         {
-            decimal TotalCost;
+            decimal costOfBeveragesPerPerson;
 
-            if (HealthyOption == true) { TotalCost = ((CostOfFoodPerPerson + CostOfBeveragesPerPerson) * NumberOfPeople + CostOfDecorations) * 0.95M; }
-            else { TotalCost = (CostOfFoodPerPerson + CostOfBeveragesPerPerson) * NumberOfPeople + CostOfDecorations; }
+            if (HealthyOptions)
+                costOfBeveragesPerPerson = 5.00M;
+            else
+                costOfBeveragesPerPerson = 20.00M;
 
-            return TotalCost;
+            return costOfBeveragesPerPerson;
+        }
+
+        public decimal Cost
+        {
+            get
+            {
+                decimal totalCost = CalculateCostOfDecorations();
+                totalCost += ((CalculateCostOfBeveragesPerPersom() + CostOfFoodPerPerson) * NumberOfPeople);
+
+                if (HealthyOptions)
+                    totalCost *= .95M;
+
+                if (NumberOfPeople > 12)
+                    totalCost += 100;
+
+                return totalCost;
+            }
         }
     }
 }
